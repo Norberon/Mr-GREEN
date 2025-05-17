@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Boutique - Bilan Mensuel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Gestion Boutique</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="dashboardLink">Tableau de Bord</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="salesLink">Ventes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="expensesLink">Dépenses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="wifiLink">WiFi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="productsLink">Produits</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Section Tableau de Bord -->
+        <div id="dashboardSection" class="section active">
+            <h2 class="mb-4">Tableau de Bord - Résumé Mensuel</h2>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Recettes Totales</h5>
+                            <h2 class="text-success" id="totalRevenue">172,920</h2>
+                            <p class="card-text">Recette finale: <span id="finalRevenue">118,420</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Dépenses Totales</h5>
+                            <h2 class="text-danger" id="totalExpenses">54,500</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Solde Courant</h5>
+                            <h2 class="text-primary" id="currentBalance">118,420</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Revenus par Catégorie</h5>
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Dépenses par Catégorie</h5>
+                            <canvas id="expensesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Bilan Mensuel</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Mois</th>
+                                            <th>Tontine</th>
+                                            <th>Affiza</th>
+                                            <th>Djimen</th>
+                                            <th>Internet</th>
+                                            <th>Électricité</th>
+                                            <th>Autres</th>
+                                            <th>Entrée Autre</th>
+                                            <th>Entrée</th>
+                                            <th>Total</th>
+                                            <th>Reste</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="monthlyTable">
+                                        <!-- Le tableau sera rempli par JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Ventes -->
+        <div id="salesSection" class="section">
+            <h2 class="mb-4">Enregistrement des Ventes</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Ajouter une Vente</h5>
+                            <form id="salesForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="saleDate" class="form-label">Date</label>
+                                        <input type="date" class="form-control" id="saleDate" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="productType" class="form-label">Type de Produit</label>
+                                        <select class="form-select" id="productType" required>
+                                            <option value="">Sélectionner un produit</option>
+                                            <option value="photocopie25">Photocopie 25F</option>
+                                            <option value="photocopie15">Photocopie 15F</option>
+                                            <option value="impression100">Impression 100F</option>
+                                            <option value="impression50">Impression 50F</option>
+                                            <option value="impression25">Impression 25F</option>
+                                            <option value="simMoov">SIM Moov</option>
+                                            <option value="simTgcom1000">SIM Tgcom 1000</option>
+                                            <option value="simTgcom800">SIM Tgcom 800</option>
+                                            <option value="wifi100">WIFI 100</option>
+                                            <option value="wifi150">WIFI 150</option>
+                                            <option value="wifi200">WIFI 200</option>
+                                            <option value="wifi500">WIFI 500</option>
+                                            <option value="wifi2000">WIFI 2000</option>
+                                            <option value="autre">Autre</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="quantity" class="form-label">Quantité</label>
+                                        <input type="number" class="form-control" id="quantity" min="1" value="1" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="unitPrice" class="form-label">Prix Unitaire</label>
+                                        <input type="number" class="form-control" id="unitPrice" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="totalPrice" class="form-label">Prix Total</label>
+                                        <input type="number" class="form-control" id="totalPrice" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="saleComment" class="form-label">Commentaire</label>
+                                        <input type="text" class="form-control" id="saleComment">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Enregistrer la Vente</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Statistiques du Jour</h5>
+                            <h3 class="text-success" id="todaySales">0</h3>
+                            <p>Total des ventes du jour</p>
+                            <hr>
+                            <h6>Top Produits:</h6>
+                            <ul id="topProducts">
+                                <!-- Sera rempli dynamiquement -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title d-flex justify-content-between">
+                        Historique des Ventes
+                        <button class="btn btn-sm btn-outline-secondary" id="exportSales">Exporter</button>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table" id="salesTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Produit</th>
+                                    <th>Quantité</th>
+                                    <th>Prix Unitaire</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesData">
+                                <!-- Les données seront ajoutées dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Dépenses -->
+        <div id="expensesSection" class="section">
+            <h2 class="mb-4">Gestion des Dépenses</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Ajouter une Dépense</h5>
+                            <form id="expenseForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="expenseDate" class="form-label">Date</label>
+                                        <input type="date" class="form-control" id="expenseDate" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="expenseCategory" class="form-label">Catégorie</label>
+                                        <select class="form-select" id="expenseCategory" required>
+                                            <option value="">Sélectionner une catégorie</option>
+                                            <option value="tontine">Tontine</option>
+                                            <option value="affiza">Affiza</option>
+                                            <option value="djimen">Djimen</option>
+                                            <option value="internet">Internet</option>
+                                            <option value="electricite">Électricité</option>
+                                            <option value="stock">Stock</option>
+                                            <option value="autre">Autre</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="expenseAmount" class="form-label">Montant</label>
+                                        <input type="number" class="form-control" id="expenseAmount" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="expenseDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="expenseDescription" rows="2"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Enregistrer la Dépense</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Résumé des Dépenses</h5>
+                            <h3 class="text-danger" id="monthExpenses">54,500</h3>
+                            <p>Total des dépenses du mois</p>
+                            <hr>
+                            <canvas id="expensesTypePie"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title d-flex justify-content-between">
+                        Historique des Dépenses
+                        <button class="btn btn-sm btn-outline-secondary" id="exportExpenses">Exporter</button>
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table" id="expensesTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Catégorie</th>
+                                    <th>Description</th>
+                                    <th>Montant</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expensesData">
+                                <!-- Les données seront ajoutées dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section WiFi -->
+        <div id="wifiSection" class="section">
+            <h2 class="mb-4">Gestion des Forfaits WiFi</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Ajouter une Vente WiFi</h5>
+                            <form id="wifiForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="wifiDate" class="form-label">Date</label>
+                                        <input type="date" class="form-control" id="wifiDate" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="wifiType" class="form-label">Type de Forfait</label>
+                                        <select class="form-select" id="wifiType" required>
+                                            <option value="">Sélectionner un forfait</option>
+                                            <option value="wifi100">WIFI 100</option>
+                                            <option value="wifi150">WIFI 150</option>
+                                            <option value="wifi200">WIFI 200</option>
+                                            <option value="wifi500">WIFI 500</option>
+                                            <option value="wifi2000">WIFI 2000</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="wifiQuantity" class="form-label">Quantité</label>
+                                        <input type="number" class="form-control" id="wifiQuantity" min="1" value="1" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="wifiTotal" class="form-label">Montant Total</label>
+                                        <input type="number" class="form-control" id="wifiTotal" readonly>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Statistiques WiFi</h5>
+                            <h3 class="text-primary" id="totalWifi">112,400</h3>
+                            <p>Total des ventes WiFi</p>
+                            <hr>
+                            <canvas id="wifiChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Résumé des Forfaits WiFi</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Forfait</th>
+                                    <th>Prix</th>
+                                    <th>Quantité Vendue</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>WIFI 100</td>
+                                    <td>100</td>
+                                    <td>372</td>
+                                    <td>37,200</td>
+                                </tr>
+                                <tr>
+                                    <td>WIFI 150</td>
+                                    <td>150</td>
+                                    <td>36</td>
+                                    <td>5,400</td>
+                                </tr>
+                                <tr>
+                                    <td>WIFI 200</td>
+                                    <td>200</td>
+                                    <td>194</td>
+                                    <td>38,800</td>
+                                </tr>
+                                <tr>
+                                    <td>WIFI 500</td>
+                                    <td>500</td>
+                                    <td>58</td>
+                                    <td>29,000</td>
+                                </tr>
+                                <tr>
+                                    <td>WIFI 2000</td>
+                                    <td>2000</td>
+                                    <td>1</td>
+                                    <td>2,000</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-primary">
+                                    <th colspan="3">Total</th>
+                                    <th>112,400</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Produits -->
+        <div id="productsSection" class="section">
+            <h2 class="mb-4">Gestion des Produits</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Ajouter un Produit</h5>
+                            <form id="productForm">
+                                <div class="mb-3">
+                                    <label for="productName" class="form-label">Nom du Produit</label>
+                                    <input type="text" class="form-control" id="productName" required>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="productCategory" class="form-label">Catégorie</label>
+                                        <select class="form-select" id="productCategory">
+                                            <option value="photocopie">Photocopie</option>
+                                            <option value="impression">Impression</option>
+                                            <option value="sim">Carte SIM</option>
+                                            <option value="wifi">WiFi</option>
+                                            <option value="accessoire">Accessoire</option>
+                                            <option value="autre">Autre</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="productPrice" class="form-label">Prix de Vente</label>
+                                        <input type="number" class="form-control" id="productPrice" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="stockQuantity" class="form-label">Quantité en Stock</label>
+                                        <input type="number" class="form-control" id="stockQuantity" value="0">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="alertThreshold" class="form-label">Seuil d'Alerte</label>
+                                        <input type="number" class="form-control" id="alertThreshold" value="5">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Stock Critique</h5>
+                            <div class="alert alert-warning" role="alert">
+                                Produits à réapprovisionner bientôt:
+                            </div>
+                            <ul class="list-group" id="lowStockList">
+                                <!-- Sera rempli dynamiquement -->
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    SIM Moov
+                                    <span class="badge bg-warning rounded-pill">2</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Écouteurs
+                                    <span class="badge bg-danger rounded-pill">1</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Liste des Produits</h5>
+                    <div class="table-responsive">
+                        <table class="table" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Catégorie</th>
+                                    <th>Prix</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsData">
+                                <!-- Données de produits seront ajoutées dynamiquement -->
+                                <tr>
+                                    <td>Photocopie 25f</td>
+                                    <td>Photocopie</td>
+                                    <td>25</td>
+                                    <td>Illimité</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">Modifier</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Photocopie 15f</td>
+                                    <td>Photocopie</td>
+                                    <td>15</td>
+                                    <td>Illimité</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">Modifier</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>SIM Moov</td>
+                                    <td>SIM</td>
+                                    <td>1000</td>
+                                    <td>6</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">Modifier</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>WiFi 100</td>
+                                    <td>WiFi</td>
+                                    <td>100</td>
+                                    <td>Illimité</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary">Modifier</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light py-3 mt-5">
+        <div class="container text-center">
+            <p>Gestion Boutique &copy; 2025 - Application de gestion pour le bilan mensuel</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

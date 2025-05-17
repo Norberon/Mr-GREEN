@@ -1,0 +1,129 @@
+/* Style général de l'application */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Styles pour les cartes */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: none;
+}
+
+.card-title {
+    color: #495057;
+    font-weight: 600;
+}
+
+/* Styles pour les sections */
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* Style pour les valeurs monétaires */
+.text-success, .text-danger, .text-primary {
+    font-weight: bold;
+}
+
+/* Style pour les formulaires */
+form label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Navigation active */
+.nav-link.active {
+    font-weight: bold;
+    border-bottom: 3px solid #fff;
+}
+
+/* Style pour les tableaux */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Style pour les boutons */
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Style pour les badges */
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+/* Animations pour les cartes */
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Style pour les montants */
+#totalRevenue, #totalExpenses, #currentBalance, #todaySales, #monthExpenses, #totalWifi {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+/* Style pour le footer */
+footer {
+    margin-top: 50px;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Style pour les alertes */
+.alert {
+    border-radius: 10px;
+}
+
+/* Styles pour les graphiques */
+canvas {
+    max-width: 100%;
+}
+
+/* Styles pour les champs date */
+input[type="date"] {
+    padding: 0.375rem 0.75rem;
+}
+
+/* Styles adaptifs pour mobile */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
